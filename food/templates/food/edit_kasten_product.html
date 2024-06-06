@@ -1,0 +1,61 @@
+{% extends 'food/base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit {{ kasten_product.product.name }}</title>
+    <link rel="stylesheet" href="{% static 'food/style.css' %}">
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-control[disabled] {
+            background-color: #e9ecef;
+        }
+        .btn-primary {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+{% block body %}
+<div class="container mt-4 form-container">
+    <h2>Edit {{ kasten_product.product.name }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-group">
+            <label for="id_target_quantity">Target Quantity</label>
+            <input type="number" class="form-control" id="id_target_quantity" value="{{ kasten_product.target_quantity }}" disabled>
+        </div>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+    </form>
+    <a href="{% url 'food:kasten_detail' kasten_product.kasten.id %}" class="btn btn-secondary btn-sm">Cancel</a>
+</div>
+{% endblock %}
+
+</body>
+</html>

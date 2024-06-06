@@ -1,0 +1,46 @@
+{% extends 'food/base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ kasten.name }} Details</title>
+    <link rel="stylesheet" href="{% static 'food/style.css' %}">
+</head>
+<body>
+
+{% block body %}
+<div class="container mt-4">
+    <h2>{{ kasten.name }} Contents</h2>
+    <form method="post" action="{% url 'food:update_all_quantities' kasten.id %}">
+        {% csrf_token %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Product</th>
+                    <th scope="col">Target Quantity</th>
+                    <th scope="col">Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for kp in kasten_products %}
+                <tr>
+                    <td>{{ kp.product.name }}</td>
+                    <td>{{ kp.target_quantity }}</td>
+                    <td>
+                        <input type="number" name="quantities" value="{{ kp.quantity }}" class="form-control" style="width: 80px; display: inline-block;">
+                        <input type="hidden" name="kp_ids" value="{{ kp.id }}">
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary btn-sm">Save All</button>
+    </form>
+    <a href="{% url 'food:index' %}" class="btn btn-primary btn-sm">Back</a>
+</div>
+{% endblock %}
+</body>
+</html>
